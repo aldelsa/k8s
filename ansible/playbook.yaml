@@ -1,0 +1,30 @@
+---
+- hosts: k8s
+
+  remote_user: root
+
+  tasks:
+  - name: apt install docker.io
+    apt:
+      pkg:
+       - docker.io
+       - htop
+      state: present
+      update_cache: true
+    become: true
+
+  - name: enable service httpd and ensure it is not masked
+    systemd:
+      name: docker
+      enabled: yes
+      masked: no
+
+  - name: swapoff -a
+    shell: |
+      swapoff -a
+
+  - name: Disable SWAP in fstab
+    replace:
+      path: /etc/fstab
+      regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+      replace: '# \1'
