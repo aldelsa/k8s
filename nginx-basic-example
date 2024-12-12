@@ -1,0 +1,28 @@
+kind: Deployment
+metadata:
+  name: nginx-echo-time
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-echo-time
+  template:
+    metadata:
+      labels:
+        app: nginx-echo-time
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            echo "Starting Nginx and time logging...";
+            nginx -g 'daemon off;' &
+            while true; do
+              echo "$(date)";
+              sleep 10;
+            done
+        ports:
+        - containerPort: 80
