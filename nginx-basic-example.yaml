@@ -1,7 +1,7 @@
 kind: Deployment
 metadata:
   name: nginx-echo-time
-  namespace: default
+  namespace: adelgado
 spec:
   replicas: 1
   selector:
